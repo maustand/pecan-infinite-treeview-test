@@ -1,0 +1,10 @@
+:host {
+  margin-top: 0.5rem;
+}
+
+ul {
+  &.collapsed {
+    display: none;
+    transition: all 0.6s linear;
+  }
+}

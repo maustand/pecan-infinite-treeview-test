@@ -1,0 +1,20 @@
+<button class="btn default" (click)="onToggle()">
+  <!-- <ng-container [ngSwitch]="node.type">
+    <i *ngSwitchCase="'connection'">Conn</i>
+    <i *ngSwitchCase="'database'">DB</i>
+  </ng-container> -->
+
+  {{ node.title }}
+</button>
+
+<ul
+  class="list-style-none"
+  [class.collapsed]="!isExpanded"
+  *ngIf="node.children?.length"
+>
+  <li
+    pecan-ai-treeview-node
+    *ngFor="let child of node.children"
+    [node]="child"
+  ></li>
+</ul>

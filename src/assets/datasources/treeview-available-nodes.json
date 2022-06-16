@@ -1,0 +1,95 @@
+[
+  {
+    "id": "62a9c42e1f3a6f1caf23e75b",
+    "title": "117.251.36.12/bigTech",
+    "type": "connection"
+  },
+  {
+    "id": "62a9c597081cd63c5022d6d9",
+    "title": "flyradar.com",
+    "type": "connection"
+  },
+  {
+    "id": "62a9c5a1eeb1b0eddf67b2f8",
+    "title": "unilever.com",
+    "type": "connection"
+  },
+
+  {
+    "id": "62a9ea1a12c404fd42e69b43",
+    "title": "DB RyianAir",
+    "type": "database",
+    "parentId": "62a9c597081cd63c5022d6d9"
+  },
+  {
+    "id": "62a9ea226635998b9382c681",
+    "title": "DB Lufthansa",
+    "type": "database",
+    "parentId": "62a9c597081cd63c5022d6d9"
+  },
+  {
+    "id": "62a9ebbedd8dfdeeef04f651",
+    "title": "DB Air Canada",
+    "type": "database",
+    "parentId": "62a9c597081cd63c5022d6d9"
+  },
+
+  {
+    "id": "62a9ee36306719afa1fe99aa",
+    "title": "Schema Main Lufthansa",
+    "type": "schema",
+    "parentId": "62a9ea226635998b9382c681"
+  },
+  {
+    "id": "62a9ee3b1f8e87101b94f6cb",
+    "title": "Schema Alternative Lufthansa",
+    "type": "schema",
+    "parentId": "62a9ea226635998b9382c681"
+  },
+
+  {
+    "id": "62a9ef748caecb5190b0f0e4",
+    "title": "Table Invoices Lufthansa",
+    "type": "table",
+    "parentId": "62a9ee36306719afa1fe99aa"
+  },
+  {
+    "id": "62a9ef7873b5dd938d9782bc",
+    "title": "Table tickets Lufthansa",
+    "type": "table",
+    "parentId": "62a9ee36306719afa1fe99aa"
+  },
+  {
+    "id": "62a9ef7fef1dfdb48b0571d3",
+    "title": "Table Alternative Invoices Lufthansa",
+    "type": "table",
+    "parentId": "62a9ee3b1f8e87101b94f6cb"
+  },
+
+  {
+    "id": "62a9f0eb8bd3da81da4a9121",
+    "title": "invoceId_column_table_invoices_lufthansa",
+    "type": "column",
+    "parentId": "62a9ef748caecb5190b0f0e4"
+  },
+
+  {
+    "id": "62a9f0f332ec265977ec0599",
+    "title": "name_column_table_invoices_lufthansa",
+    "type": "column",
+    "parentId": "62a9ef748caecb5190b0f0e4"
+  },
+
+  {
+    "id": "62a9ea308081b5fc2b7095cb",
+    "title": "DB Cocacola",
+    "type": "database",
+    "parentId": "62a9c5a1eeb1b0eddf67b2f8"
+  },
+  {
+    "id": "62a9ea394e430003ecb0061e",
+    "title": "DB Maizena",
+    "type": "database",
+    "parentId": "62a9c5a1eeb1b0eddf67b2f8"
+  }
+]
