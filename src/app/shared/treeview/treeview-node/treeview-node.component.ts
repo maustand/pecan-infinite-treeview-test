@@ -6,7 +6,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { filter, first, Subject, takeUntil } from 'rxjs';
-import { TreeViewAvailableNode } from 'src/app/core/interfaces/treeViewAvailableNode';
+import {
+  TreeNodeTypeIconMap,
+  TreeViewAvailableNode,
+} from 'src/app/core/interfaces/treeViewAvailableNode';
 import { TreeViewHelperService } from '../treeview-helper.service';
 
 @Component({
@@ -19,6 +22,8 @@ export class TreeViewNodeComponent implements OnInit {
   @Input() node!: TreeViewAvailableNode;
 
   isExpanded: boolean;
+
+  iconResolverHash = TreeNodeTypeIconMap;
 
   private destroy: Subject<void>;
 
@@ -37,7 +42,7 @@ export class TreeViewNodeComponent implements OnInit {
         first(),
         takeUntil(this.destroy) // usefull in a realword env, subscription should be removed
       )
-      .subscribe(({ id, newValue }) => {
+      .subscribe(({ newValue }) => {
         this.node.children = newValue.children;
         this.changeDetecRef.markForCheck();
       });

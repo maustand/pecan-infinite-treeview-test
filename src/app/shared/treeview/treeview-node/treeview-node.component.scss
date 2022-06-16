@@ -2,10 +2,13 @@
   margin-top: 0.5rem;
 }
 
-ul {
-  &.collapsed {
-    display: none;
-  }
+.collapsed {
+  display: none;
+}
+
+.icon-type {
+  margin-left: 0.5rem;
+  margin-right: 0.4rem;
 }
 
 .forbidden-node {

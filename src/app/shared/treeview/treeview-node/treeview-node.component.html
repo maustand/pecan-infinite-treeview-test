@@ -1,9 +1,17 @@
-<button type="button" class="btn default" (click)="onToggle()" *ngIf="!node.isForbidden; else forbiddenNode;">
+<button
+  type="button"
+  class="btn default"
+  (click)="onToggle()"
+  *ngIf="!node.isForbidden; else forbiddenNode"
+>
   <i
     *ngIf="node.children?.length"
     class="bi"
     [class]="isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
   ></i>
+
+  <i class="bi icon-type" [class]="iconResolverHash[node.type]"></i>
+
   {{ node.title }}
 </button>
 
@@ -20,5 +28,8 @@
 </ul>
 
 <ng-template #forbiddenNode>
-  <p class="forbidden-node">{{ node.title }}</p>
+  <p class="forbidden-node">
+    <i class="bi icon-type" [class]="iconResolverHash[node.type]"></i>
+    {{ node.title }}
+  </p>
 </ng-template>

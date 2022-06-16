@@ -80,7 +80,6 @@ export class AppComponent implements OnInit {
         switchMap((node) => this.treeAvailableNodesServ.all({ parentId: node.id })),
         mergeMap((nodes) => {
           return this.fetchBlackListPolicyOnNodes(nodes).pipe(
-          tap((a) => console.log(a) ),
             map((blackList) => {
               return this.applyBlackListOnNodes(nodes, blackList);
             })
