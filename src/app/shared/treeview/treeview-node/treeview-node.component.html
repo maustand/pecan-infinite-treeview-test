@@ -1,16 +1,16 @@
-<button class="btn default" (click)="onToggle()">
-  <!-- <ng-container [ngSwitch]="node.type">
-    <i *ngSwitchCase="'connection'">Conn</i>
-    <i *ngSwitchCase="'database'">DB</i>
-  </ng-container> -->
-
+<button type="button" class="btn default" (click)="onToggle()" *ngIf="!node.isForbidden; else forbiddenNode;">
+  <i
+    *ngIf="node.children?.length"
+    class="bi"
+    [class]="isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'"
+  ></i>
   {{ node.title }}
 </button>
 
 <ul
   class="list-style-none"
+  *ngIf="!node.isForbidden && node.children?.length"
   [class.collapsed]="!isExpanded"
-  *ngIf="node.children?.length"
 >
   <li
     pecan-ai-treeview-node
@@ -18,3 +18,7 @@
     [node]="child"
   ></li>
 </ul>
+
+<ng-template #forbiddenNode>
+  <p class="forbidden-node">{{ node.title }}</p>
+</ng-template>

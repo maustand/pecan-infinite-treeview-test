@@ -6,7 +6,8 @@ export enum TreeNodeLevel {
   COLUMN = 'column',
 }
 
-interface PecanTreeNodeUIProps {
+interface PecanTreeNodeUIProps { // usefull for keeping clean the model instead of multiple ?
+  isForbidden?: boolean;
   children?: TreeViewAvailableNode[];
 }
 

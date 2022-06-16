@@ -19,7 +19,9 @@ export class TreeViewAvailableNodesService {
     type?: string;
   }): Observable<TreeViewAvailableNode[]> {
     return this.http.get<TreeViewAvailableNode[]>(`${this.entryPoint}`).pipe(
-      // simulates queryparams GET: /treeview-available-nodes?q=parentId=20.. DOES NOT intend to be a real filter.
+      /*  MAP simulates queryparams GET: /treeview-available-nodes?q=parentId=20..
+          DOES NOT intend to be a real world filter. Filtered data should come from server
+       */
       map((res) =>
         res.filter((item) => {
           return item.parentId === query?.parentId || item.type === query?.type;

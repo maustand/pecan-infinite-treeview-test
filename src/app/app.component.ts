@@ -4,11 +4,23 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { filter, map, mergeMap, Subject, switchMap, takeUntil } from 'rxjs';
+import {
+  filter,
+  forkJoin,
+  map,
+  mergeMap,
+  Observable,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
+import { BlackListPolicy } from './core/interfaces/blackListPolicy';
 import {
   TreeNodeLevel,
   TreeViewAvailableNode,
 } from './core/interfaces/treeViewAvailableNode';
+import { BlackListPolicyService } from './core/services/api/blacklist-policy/blacklist-policy.service';
 import { TreeViewAvailableNodesService } from './core/services/api/tree-view-available-nodes/tree-view-available-nodes.service';
 import { TreeViewHelperService } from './shared/treeview/treeview-helper.service';
 
@@ -21,6 +33,8 @@ import { TreeViewHelperService } from './shared/treeview/treeview-helper.service
 export class AppComponent implements OnInit {
   treeViewSource: TreeViewAvailableNode[];
 
+  currentSelectedNode?: TreeViewAvailableNode;
+
   private destroy$: Subject<void>;
 
   private hashFetchedNodeIds: { [key: string]: boolean };
@@ -28,6 +42,7 @@ export class AppComponent implements OnInit {
   constructor(
     private treeAvailableNodesServ: TreeViewAvailableNodesService,
     private treeViewHelperServ: TreeViewHelperService,
+    private blackListPolicyServ: BlackListPolicyService,
     private changeDetecRef: ChangeDetectorRef
   ) {
     this.hashFetchedNodeIds = {};
@@ -39,9 +54,18 @@ export class AppComponent implements OnInit {
     // fetch first nodes ( Connection level )
     this.treeAvailableNodesServ
       .all({ type: TreeNodeLevel.CONNECTION })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        mergeMap((nodes) => {
+          return this.fetchBlackListPolicyOnNodes(nodes).pipe(
+            map((blackList) => {
+              return this.applyBlackListOnNodes(nodes, blackList);
+            })
+          );
+        }),
+
+        takeUntil(this.destroy$)
+      )
       .subscribe((res) => {
-        console.log(res);
         this.treeViewSource = res;
         this.changeDetecRef.markForCheck();
       });
@@ -49,25 +73,69 @@ export class AppComponent implements OnInit {
     // listen selection of a certain node and try to fetch its childrens
     this.treeViewHelperServ.onNodeSelection$
       .pipe(
-        filter((node) => (!this.hashFetchedNodeIds[node.id])), // avoids to fetch data for nodes
-        mergeMap((node) =>
-          this.treeAvailableNodesServ.all({ parentId: node.id }).pipe(
-            map((response) => {
-              return {
-                selected: node,
-                children: response,
-              };
+        filter((node) => !this.hashFetchedNodeIds[node.id]), // avoids to double fetch data for nodes
+        tap((node) => {
+          this.currentSelectedNode = node;
+        }),
+        switchMap((node) => this.treeAvailableNodesServ.all({ parentId: node.id })),
+        mergeMap((nodes) => {
+          return this.fetchBlackListPolicyOnNodes(nodes).pipe(
+          tap((a) => console.log(a) ),
+            map((blackList) => {
+              return this.applyBlackListOnNodes(nodes, blackList);
             })
-          )
-        ),
+          );
+        }),
         takeUntil(this.destroy$)
       )
-      .subscribe(({ selected, children }) => {
-        this.hashFetchedNodeIds[selected.id] = true;
-        this.treeViewHelperServ.updateNodeValue(selected.id, {
-          ...selected,
-          children: children,
+      .subscribe((childrenOfSelectedNode) => {
+        this.hashFetchedNodeIds[this.currentSelectedNode?.id as string] = true;
+
+        this.treeViewHelperServ.updateNodeValue(this.currentSelectedNode!.id, {
+          ...(this.currentSelectedNode as TreeViewAvailableNode),
+          children: childrenOfSelectedNode,
         });
       });
+  }
+
+  /**
+   *  Fetch the black list policy for a certain list of TreeViewAvailableNode, using their ids
+   * @param children List of TreeViewAvailableNode to be fetched
+   * @returns Observable<BlackListPolicy[]
+   */
+  private fetchBlackListPolicyOnNodes(
+    children: TreeViewAvailableNode[]
+  ): Observable<BlackListPolicy[]> {
+    const idsList = children.reduce((prev, curr) => {
+      prev.push(curr.id);
+      return prev;
+    }, [] as string[]);
+
+    return this.blackListPolicyServ.all({ blackListIds: idsList });
+  }
+
+  /**
+   * Gets a list of nodes and the blacklist in order set it, applying isForbidden when it is required
+   * @param nodes 
+   * @param blackList 
+   * @returns TreeViewAvailableNode[]
+   */
+  private applyBlackListOnNodes(
+    nodes: TreeViewAvailableNode[],
+    blackList: BlackListPolicy[]
+  ): TreeViewAvailableNode[] {
+    const nodesHash = nodes.reduce((prev, curr, index) => {
+      prev[curr.id] = index;
+      return prev;
+    }, {} as { [key: string]: number });
+
+    blackList.forEach((item) => {
+      if (nodesHash[item.itemId] !== undefined) {
+        const nodeIndex = nodesHash[item.itemId];
+        nodes[nodeIndex].isForbidden = true;
+      }
+    });
+
+    return nodes;
   }
 }

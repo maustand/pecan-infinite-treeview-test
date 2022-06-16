@@ -5,6 +5,10 @@
 ul {
   &.collapsed {
     display: none;
-    transition: all 0.6s linear;
   }
+}
+
+.forbidden-node {
+  margin: 0;
+  color: #6c757d;
 }

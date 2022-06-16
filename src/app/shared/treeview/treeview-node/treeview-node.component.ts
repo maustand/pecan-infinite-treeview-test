@@ -38,7 +38,6 @@ export class TreeViewNodeComponent implements OnInit {
         takeUntil(this.destroy) // usefull in a realword env, subscription should be removed
       )
       .subscribe(({ id, newValue }) => {
-        console.log('onupdate', id, this.node.id);
         this.node.children = newValue.children;
         this.changeDetecRef.markForCheck();
       });
