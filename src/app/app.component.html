@@ -1,11 +1,11 @@
-
-
-<pecan-ai-header>
-</pecan-ai-header>
-
+<pecan-ai-header> </pecan-ai-header>
 
 <div class="content" role="main">
-
   <pecan-ai-treeview [source]="treeViewSource"></pecan-ai-treeview>
 
+  <pecan-ai-details-selected-node
+    *ngIf="currentSelectedNode?.id"
+    [node]="currentSelectedNode"
+  >
+  </pecan-ai-details-selected-node>
 </div>

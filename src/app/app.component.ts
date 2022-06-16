@@ -2,23 +2,21 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import {
-  filter,
-  forkJoin,
-  map,
+  filter, map,
   mergeMap,
   Observable,
   Subject,
   switchMap,
   takeUntil,
-  tap,
+  tap
 } from 'rxjs';
 import { BlackListPolicy } from './core/interfaces/blackListPolicy';
 import {
   TreeNodeLevel,
-  TreeViewAvailableNode,
+  TreeViewAvailableNode
 } from './core/interfaces/treeViewAvailableNode';
 import { BlackListPolicyService } from './core/services/api/blacklist-policy/blacklist-policy.service';
 import { TreeViewAvailableNodesService } from './core/services/api/tree-view-available-nodes/tree-view-available-nodes.service';

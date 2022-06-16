@@ -25,10 +25,11 @@ body {
 
 .default {
   color: black;
-}
-
-.default:hover {
-  background: #e7e7e7;
+  
+  &:hover,
+  &:focus {
+    background: #e7e7e7;
+  }
 }
 
 /*** Helpers  ***/

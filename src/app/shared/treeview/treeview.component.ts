@@ -1,8 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnInit,
+  Input
 } from '@angular/core';
 import { TreeViewAvailableNode } from 'src/app/core/interfaces/treeViewAvailableNode';
 
@@ -12,14 +11,12 @@ import { TreeViewAvailableNode } from 'src/app/core/interfaces/treeViewAvailable
   styleUrls: ['./treeview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeViewComponent implements OnInit {
+export class TreeViewComponent {
   @Input() source: TreeViewAvailableNode[];
 
   constructor() {
     this.source = [];
   }
-
-  ngOnInit(): void {}
 
   trackByFn(index: number, item: TreeViewAvailableNode) {
     return `node-${item.id}-${item.type}`;

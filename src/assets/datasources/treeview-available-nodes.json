@@ -110,5 +110,18 @@
     "title": "Cocacola Schema Fake",
     "type": "schema",
     "parentId": "62a9ea308081b5fc2b7095cb"
+  },
+
+  {
+    "id": "62ab119d61efc3cf4f4a2aa4",
+    "title": "schema On Maizena DB",
+    "type": "schema",
+    "parentId": "62a9ea394e430003ecb0061e"
+  },
+  {
+    "id": "62ab1237215662f6d0c11837",
+    "title": "disabled table on On schema of maizena DB ( has children )",
+    "type": "table",
+    "parentId": "62ab119d61efc3cf4f4a2aa4"
   }
 ]
